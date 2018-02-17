@@ -13,11 +13,12 @@ public class AudioManager : Singleton<AudioManager>
         public float volume;
         public bool music;
         public bool playOnAwake;
+        public bool global;
         public AudioMixerGroup output;
         public string clipID;
     }
 
-    [SerializeField] [Range(1.0f, 10.0f)] int m_numOfChannels = 5;
+    [SerializeField] [Range(1.0f, 20.0f)] int m_numOfChannels = 5;
     [SerializeField] ClipInfo[] m_clips = null;
 
     AudioSource[] m_SFXChannels;
@@ -32,10 +33,14 @@ public class AudioManager : Singleton<AudioManager>
         {
             AudioSource audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.loop = false;
+            audioSource.spatialBlend = 1.0f;
+            audioSource.dopplerLevel = 0.0f;
             m_SFXChannels[i] = audioSource;
 
             AudioSource music = gameObject.AddComponent<AudioSource>();
             music.loop = true;
+            music.spatialBlend = 1.0f;
+            music.dopplerLevel = 0.0f;
             m_musicChannels[i] = music;
         }
 
@@ -43,7 +48,7 @@ public class AudioManager : Singleton<AudioManager>
         {
             if (m_clips[i].playOnAwake)
             {
-                PlayClip(m_clips[i].clipID);
+                PlayClip(m_clips[i].clipID, Vector3.zero);
             }
         }
     }
@@ -117,21 +122,23 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 
-    public void PlayClip(string clipID)
+    public void PlayClip(string clipID, Vector3 position)
     {
+        // If the clip is set for global, position doesn't really matter
+
         ClipInfo clip = GetClip(clipID);
 
         if (clip.music)
         {
-            PlayMusic(clip);
+            PlayMusic(clip, position);
         }
         else
         {
-            PlaySFX(clip);
+            PlaySFX(clip, position);
         }
     }
 
-    private void PlaySFX(ClipInfo clip)
+    private void PlaySFX(ClipInfo clip, Vector3 position)
     {
         foreach (AudioSource audioSource in m_SFXChannels)
         {
@@ -141,6 +148,8 @@ public class AudioManager : Singleton<AudioManager>
                 audioSource.clip = clip.audioClip;
                 audioSource.pitch = clip.pitch;
                 audioSource.volume = clip.volume;
+                audioSource.spatialBlend = (clip.global) ? 0.0f : 1.0f;
+                audioSource.maxDistance = (clip.global) ? 1000 : 20;
                 audioSource.outputAudioMixerGroup = clip.output;
                 audioSource.Play();
                 break;
@@ -148,7 +157,7 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 
-    private void PlayMusic(ClipInfo clip)
+    private void PlayMusic(ClipInfo clip, Vector3 position)
     {
         foreach (AudioSource audioSource in m_musicChannels)
         {
@@ -158,6 +167,8 @@ public class AudioManager : Singleton<AudioManager>
                 audioSource.clip = clip.audioClip;
                 audioSource.pitch = clip.pitch;
                 audioSource.volume = clip.volume;
+                audioSource.spatialBlend = (clip.global) ? 0.0f : 1.0f;
+                audioSource.maxDistance = (clip.global) ? 1000 : 20;
                 audioSource.outputAudioMixerGroup = clip.output;
                 audioSource.Play();
                 break;
