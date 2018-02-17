@@ -729,3 +729,4 @@ MonoBehaviour:
     global: 0
     output: {fileID: 243316070734480510, guid: 9445b262dd2c55a4a8c164608c37e7a1, type: 2}
     clipID: Test
+  player: {fileID: 1605919446}

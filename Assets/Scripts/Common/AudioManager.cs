@@ -122,27 +122,30 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 
-    public void PlayClip(string clipID, Vector3 position)
+    public void PlayClip(string clipID, Vector3 position, float duration = -1.0f)
     {
         // If the clip is set for global, position doesn't really matter
+        // If duration is less than 0.0f, it will play the clip out fully
 
         ClipInfo clip = GetClip(clipID);
 
+        duration = (duration <= 0.0f) ? clip.audioClip.length : duration;
+
         if (clip.music)
         {
-            PlayMusic(clip, position);
+            PlayMusic(clip, position, duration);
         }
         else
         {
-            PlaySFX(clip, position);
+            PlaySFX(clip, position, duration);
         }
     }
 
-    private void PlaySFX(ClipInfo clip, Vector3 position)
+    private void PlaySFX(ClipInfo clip, Vector3 position, float duration)
     {
         foreach (AudioSource audioSource in m_SFXChannels)
         {
-            if (!audioSource.isPlaying)
+            if (clip.global && !audioSource.isPlaying)
             {
                 audioSource.Stop();
                 audioSource.clip = clip.audioClip;
@@ -154,23 +157,60 @@ public class AudioManager : Singleton<AudioManager>
                 audioSource.Play();
                 break;
             }
+            else if (!clip.global)
+            {
+                GameObject temp = new GameObject("Temporary Sound");
+                temp.transform.parent = transform;
+                temp.transform.position = position;
+                AudioSource audio = temp.AddComponent<AudioSource>();
+                audio.dopplerLevel = 0.0f; audio.clip = clip.audioClip;
+
+                audio.pitch = clip.pitch;
+                audio.volume = clip.volume;
+                audio.spatialBlend = 1.0f;
+                audio.maxDistance = 20.0f;
+                audio.outputAudioMixerGroup = clip.output;
+                audio.Play();
+
+                Destroy(temp, duration);
+                break;
+            }
         }
     }
 
-    private void PlayMusic(ClipInfo clip, Vector3 position)
+    private void PlayMusic(ClipInfo clip, Vector3 position, float duration)
     {
         foreach (AudioSource audioSource in m_musicChannels)
         {
-            if (!audioSource.isPlaying)
+            if (clip.global && !audioSource.isPlaying)
             {
                 audioSource.Stop();
                 audioSource.clip = clip.audioClip;
                 audioSource.pitch = clip.pitch;
                 audioSource.volume = clip.volume;
-                audioSource.spatialBlend = (clip.global) ? 0.0f : 1.0f;
-                audioSource.maxDistance = (clip.global) ? 1000 : 20;
+                audioSource.spatialBlend = 0.0f;
+                audioSource.maxDistance = 1000.0f;
                 audioSource.outputAudioMixerGroup = clip.output;
                 audioSource.Play();
+                break;
+            }
+            else if (!clip.global)
+            {
+                GameObject temp = new GameObject("Temporary Sound");
+                temp.transform.parent = transform;
+                temp.transform.position = position;
+                AudioSource audio = temp.AddComponent<AudioSource>();
+                audio.dopplerLevel = 0.0f;
+
+                audio.clip = clip.audioClip;
+                audio.pitch = clip.pitch;
+                audio.volume = clip.volume;
+                audio.spatialBlend = 1.0f;
+                audio.maxDistance = 20.0f;
+                audio.outputAudioMixerGroup = clip.output;
+                audio.Play();
+
+                Destroy(temp, duration);
                 break;
             }
         }
