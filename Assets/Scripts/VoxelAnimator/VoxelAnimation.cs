@@ -60,7 +60,6 @@ public class VoxelAnimation : MonoBehaviour
 			transitionAnimation = transition.CheckConditions(curAnimation);
 			if(transitionAnimation != curAnimation)
 			{
-				Debug.Log(transitionAnimation);
 				return transitionAnimation;
 			}
 		}
