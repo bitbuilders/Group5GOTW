@@ -245,6 +245,7 @@ MonoBehaviour:
   m_frames:
   - {fileID: 4300000, guid: 95d29fcd917991f48a0ea14d9ccab647, type: 3}
   - {fileID: 4300000, guid: 3a36402726a97ac4cac716c1cb0ed9d4, type: 3}
+  - {fileID: 4300000, guid: 5dc3ac3d0a4b27c47b88f60535151282, type: 3}
   - {fileID: 4300000, guid: ac78487d795ab594087f2d9e27d9977d, type: 3}
   m_timeStep: 0.12
   m_transitions: []
