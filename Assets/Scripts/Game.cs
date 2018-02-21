@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ public class Game : MonoBehaviour
     [SerializeField] GameObject m_player2;
     [SerializeField] bool m_bothDead = false;
     [SerializeField] GameObject m_pauseMenu;
-    [SerializeField] GameObject m_loseMenu;
+    [SerializeField] GameObject m_endMenu;
     [SerializeField] TextMeshProUGUI m_score1Text;
     [SerializeField] TextMeshProUGUI m_score2Text;
     [SerializeField] TextMeshProUGUI m_time1Text;
@@ -36,23 +37,28 @@ public class Game : MonoBehaviour
         {
             UpdateTime();
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseGame();
+        }
     }
 
     private void EndGame()
     {
-        if (m_loseMenu && m_pauseMenu)
+        if (m_endMenu && m_pauseMenu)
         {
-            m_loseMenu.SetActive(true);
+            m_endMenu.SetActive(true);
             m_pauseMenu.SetActive(false);
         }
     }
 
     private void StartGame()
     {
-        if (m_loseMenu && m_pauseMenu)
+        if (m_endMenu && m_pauseMenu)
         {
             m_bothDead = false;
-            m_loseMenu.SetActive(false);
+            m_endMenu.SetActive(false);
             m_pauseMenu.SetActive(false);
         }
     }
@@ -79,5 +85,38 @@ public class Game : MonoBehaviour
         //    int minutes = ((int)m_currentSeconds / 60);
         //    m_time2Text.text = minutes.ToString().PadLeft(2, '0') + ":" + seconds.ToString().PadLeft(2, '0');
         //}
+    }
+
+    public void LoadScene(string scene)
+    {
+        SceneManager.LoadScene(scene);
+        Time.timeScale = 1.0f;
+    }
+
+    public void PauseGame()
+    {
+        if (!m_bothDead)
+        {
+            Time.timeScale = 0.0f;
+            m_pauseMenu.SetActive(true);
+        }
+    }
+
+    public void UnPauseGame()
+    {
+        if (!m_bothDead)
+        {
+            Time.timeScale = 1.0f;
+            m_pauseMenu.SetActive(false);
+        }
+    }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
