@@ -2857,7 +2857,7 @@ MonoBehaviour:
   m_lookSpeed: 1
   m_pitch: 20
   m_response: 1
-  m_target: {fileID: 1936470450}
+  m_target: {fileID: 1996419422}
 --- !u!1 &1807779362
 GameObject:
   m_ObjectHideFlags: 0
@@ -3740,6 +3740,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e039547625346244fb3fbe945a637138, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1996419422 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1237920243906056, guid: e039547625346244fb3fbe945a637138,
+    type: 2}
+  m_PrefabInternal: {fileID: 1996419421}
 --- !u!1001 &1998382149
 Prefab:
   m_ObjectHideFlags: 0
