@@ -11,9 +11,14 @@ public class TargetCamera : MonoBehaviour
     [SerializeField] [Range(0.1f, 10.0f)] float m_response = 1.0f;
     [SerializeField] GameObject m_target;
 
+    float m_yaw = 0.0f;
+
     void Update()
     {
-        Quaternion view = m_target.transform.rotation * Quaternion.Euler(m_pitch, 0.0f, 0.0f);
+        m_yaw += Input.GetAxis("RightJoystickY") * m_lookSpeed;
+        //m_pitch = Mathf.Clamp(m_pitch, m_pitchMin, m_pitchMax);
+
+        Quaternion view = m_target.transform.rotation * Quaternion.Euler(m_pitch, m_yaw, 0.0f);
         Vector3 position = m_target.transform.position;
         Vector3 offset = (view * Vector3.back * m_distance) + Vector3.up * m_upOffset;
 

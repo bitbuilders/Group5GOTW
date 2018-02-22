@@ -7,6 +7,9 @@ public class Player : MonoBehaviour
     [SerializeField] [Range(1.0f, 100.0f)] float m_speed = 1.0f;
     [SerializeField] [Range(1.0f, 100.0f)] float m_turnSpeed = 1.0f;
 
+    public int Score { get; set; }
+    public bool Alive { get; set; }
+
     void Start()
     {
 
