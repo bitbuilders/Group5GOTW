@@ -46,10 +46,51 @@ public class Game : MonoBehaviour
 
     private void EndGame()
     {
-        if (m_endMenu && m_pauseMenu)
+        if (m_endMenu && m_pauseMenu && !m_endMenu.activeInHierarchy)
         {
             m_endMenu.SetActive(true);
             m_pauseMenu.SetActive(false);
+
+            SaveScores();
+        }
+    }
+
+    private void SaveScores()
+    {
+        if (PlayerPrefs.HasKey("NumberOfPlayers"))
+        {
+            PlayerPrefs.SetInt("NumberOfPlayers", PlayerPrefs.GetInt("NumberOfPlayers") + 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("NumberOfPlayers", 1);
+        }
+
+        int numPlayers = PlayerPrefs.GetInt("NumberOfPlayers");
+        //int score = (m_player1.Score + m_player2.Score) + m_currentSeconds;
+        //PlayerPrefs.SetInt("Score" + numPlayers, score);
+        PlayerPrefs.SetInt("Score" + numPlayers, numPlayers);
+
+        List<int> scores = new List<int>();
+
+        for (int i = 1; i <= numPlayers; ++i)
+        {
+            int s = PlayerPrefs.GetInt("Score" + i);
+            scores.Add(s);
+            PlayerPrefs.DeleteKey("Score" + i);
+        }
+
+        scores.Sort();
+        scores.Reverse();
+
+        for (int i = 0; i < scores.Count; ++i)
+        {
+            PlayerPrefs.SetInt("Score" + (i + 1), scores[i]);
+            //if (scores[i] == score)
+            //{
+            //    PlayerPrefs.SetInt("Placement", i + 1);
+            //}
+            //print(scores[i]);
         }
     }
 
