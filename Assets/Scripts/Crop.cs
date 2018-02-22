@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Crop : MonoBehaviour
@@ -7,6 +8,7 @@ public class Crop : MonoBehaviour
     [SerializeField] [Range(0.1f, 20.0f)] float m_maxLife = 3.0f;
     [SerializeField] [Range(0.1f, 20.0f)] float m_respawnTime = 3.0f;
     [SerializeField] KeyCode m_eatKey = KeyCode.Space;
+    [SerializeField] GameObject m_cropHUD;
 
     ParticleSystem m_particleSystem;
     SphereCollider m_collider;
@@ -28,7 +30,6 @@ public class Crop : MonoBehaviour
 
     private void Update()
     {
-        NibbleOnCrop();
         if (Eaten)
         {
             m_time += Time.deltaTime;
@@ -42,16 +43,23 @@ public class Crop : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         //Player player = other.GetComponent<Player>();
-        if (other.CompareTag("Player") /*&& player.Alive*/)
+        if (other.CompareTag("Player") && !Eaten /*&& player.Alive*/)
         {
-            if (Input.GetKey(m_eatKey))
+            if (Input.GetButton("Eat"))
             {
                 NibbleOnCrop();
             }
-            if (Input.GetKeyUp(m_eatKey))
+            if (Input.GetButtonUp("Eat"))
             {
                 m_life = m_maxLife;
             }
+            m_cropHUD.SetActive(true);
+        }
+
+        if (Eaten)
+        {
+            m_cropHUD.SetActive(false);
+
         }
     }
 
@@ -60,6 +68,8 @@ public class Crop : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             m_life = m_maxLife;
+
+            m_cropHUD.SetActive(false);
         }
     }
 
@@ -80,6 +90,7 @@ public class Crop : MonoBehaviour
     {
         m_collider.enabled = false;
         m_meshRenderer.enabled = false;
+        m_cropHUD.SetActive(false);
     }
 
     void Respawn()
