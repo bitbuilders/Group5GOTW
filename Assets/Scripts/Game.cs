@@ -47,7 +47,7 @@ public class Game : MonoBehaviour
                 UpdateScore();
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown("Pause"))
             {
                 PauseGame();
             }
@@ -150,8 +150,15 @@ public class Game : MonoBehaviour
     {
         if (!m_bothDead)
         {
-            Time.timeScale = 0.0f;
-            m_pauseMenu.SetActive(true);
+            if (!m_pauseMenu.activeInHierarchy)
+            {
+                Time.timeScale = 0.0f;
+                m_pauseMenu.SetActive(true);
+            }
+            else
+            {
+                UnPauseGame();
+            }
         }
     }
 

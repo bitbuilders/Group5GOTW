@@ -54,7 +54,7 @@ public class Crop : MonoBehaviour
             string button = player.m_FirstPlayer ? "Eat1" : "Eat2";
             if (Input.GetButton(button))
             {
-                NibbleOnCrop(other.GetComponent<Player>());
+                NibbleOnCrop(player);
             }
             if (Input.GetButtonUp(button))
             {
