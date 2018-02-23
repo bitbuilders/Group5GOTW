@@ -52,10 +52,11 @@ public class Game : MonoBehaviour
     {
         if (m_endMenu && m_pauseMenu && !m_endMenu.activeInHierarchy)
         {
+            SaveScores();
+            m_endMenu.GetComponent<EndGame>().UpdateValues();
+
             m_endMenu.SetActive(true);
             m_pauseMenu.SetActive(false);
-
-            SaveScores();
         }
     }
 
@@ -71,7 +72,7 @@ public class Game : MonoBehaviour
         }
 
         int numPlayers = PlayerPrefs.GetInt("NumberOfPlayers");
-        int score = (m_p1.Score + m_p2.Score) + (int)m_currentSeconds;
+        int score = (m_p1.Score + m_p2.Score) + (int)(m_currentSeconds / 2.0f);
         PlayerPrefs.SetInt("Score" + numPlayers, score);
         //PlayerPrefs.SetInt("Score" + numPlayers, numPlayers);
 
@@ -93,6 +94,7 @@ public class Game : MonoBehaviour
             if (scores[i] == score)
             {
                 PlayerPrefs.SetInt("Placement", i + 1);
+                PlayerPrefs.SetInt("RecentScore", score);
             }
             //print(scores[i]);
         }

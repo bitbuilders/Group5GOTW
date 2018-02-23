@@ -26,6 +26,11 @@ public class FarmerAI : MonoBehaviour
         if (m_targetAnimal)
         {
             Vector3 direction = m_targetAnimal.transform.position - transform.position;
+            transform.position += (direction.normalized * m_speed * Time.deltaTime);
+
+            direction.y = 0.0f;
+            Quaternion rotation = Quaternion.LookRotation(direction.normalized);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * m_turnSpeed);
 
             m_jumpTime += Time.deltaTime;
             RaycastHit raycastHit;
@@ -38,14 +43,6 @@ public class FarmerAI : MonoBehaviour
                     Jump();
                 }
             }
-            else
-            {
-                transform.position += (direction.normalized * m_speed * Time.deltaTime);
-            }
-
-            direction.y = 0.0f;
-            Quaternion rotation = Quaternion.LookRotation(direction.normalized);
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * m_turnSpeed);
         }
 
         if (!m_targetAnimal)
