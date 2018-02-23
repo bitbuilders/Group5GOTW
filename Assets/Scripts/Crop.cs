@@ -16,7 +16,7 @@ public class Crop : MonoBehaviour
     float m_life;
     float m_time;
 
-    bool Eaten { get { return m_life <= 0.0f; } }
+    public bool Eaten { get { return m_life <= 0.0f; } }
 
     private void Start()
     {
@@ -45,8 +45,8 @@ public class Crop : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        //Player player = other.GetComponent<Player>();
-        if (other.CompareTag("Player") && !Eaten /*&& player.Alive*/)
+        Player player = other.GetComponent<Player>();
+        if (other.CompareTag("Player") && !Eaten && player.Alive)
         {
             if (Input.GetButton("Eat"))
             {
@@ -72,6 +72,10 @@ public class Crop : MonoBehaviour
             m_hudText.transform.LookAt(target.transform.position - direction);
             m_hudText.transform.Rotate(0.0f, 180.0f, 0.0f);
         }
+        else if (other.CompareTag("AI"))
+        {
+            AIOnCrop(other.GetComponent<AnimalAI>());
+        }
 
         if (Eaten)
         {
@@ -82,11 +86,25 @@ public class Crop : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("AI"))
         {
             m_life = m_maxLife;
 
             m_cropHUD.SetActive(false);
+        }
+    }
+
+    void AIOnCrop(AnimalAI ai)
+    {
+        m_life -= Time.deltaTime;
+        if (Eaten)
+        {
+            Die();
+            ai.FindNextCrop();
+        }
+        else
+        {
+            m_particleSystem.Play();
         }
     }
 

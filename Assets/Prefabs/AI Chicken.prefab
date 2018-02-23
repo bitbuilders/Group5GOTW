@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 136640167859274426}
   m_Layer: 0
   m_Name: AI Chicken
-  m_TagString: Untagged
+  m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -494,6 +494,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced1f72300c266b40bbd7255ad9b0ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_speed: 4.5
+  m_turnSpeed: 3
+  m_maxLookDistance: 25
+  m_minLookDistance: 5
+  m_maxLookTime: 5
 --- !u!114 &114627816226798532
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 135530174332397096}
   m_Layer: 0
   m_Name: onion
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

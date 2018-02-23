@@ -33,6 +33,6 @@ public class AIManager : Singleton<AIManager>
         Quaternion rotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
 
         Vector3 offset = new Vector3(Random.value * 3.0f, 0.0f, Random.value * 3.0f);
-        GameObject agent = Instantiate(animal, location.position + offset, rotation, location);
+        Instantiate(animal, location.position + offset, rotation, location);
     }
 }
