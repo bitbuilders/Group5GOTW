@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
         {
             velocity.z = Input.GetAxis("Vertical1") * m_speed;
 
-            if (velocity.z < 0.01f)
+            if (velocity.z < -0.1f)
                 reverse = -1.0f;
 
             rotate.y = (Input.GetAxis("Horizontal1") * m_turnSpeed) * reverse;
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
         {
             velocity.z = Input.GetAxis("Vertical2") * m_speed;
 
-            if (velocity.z < 0.01f)
+            if (velocity.z < -0.1f)
                 reverse = -1.0f;
 
             rotate.y = (Input.GetAxis("Horizontal2") * m_turnSpeed) * reverse;
