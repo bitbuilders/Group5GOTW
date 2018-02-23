@@ -9,13 +9,17 @@ public class TargetCamera : MonoBehaviour
     [SerializeField] [Range(1.0f, 30.0f)] float m_lookSpeed = 1.0f;
     [SerializeField] [Range(1.0f, 90.0f)] float m_pitch = 1.0f;
     [SerializeField] [Range(0.1f, 10.0f)] float m_response = 1.0f;
-    [SerializeField] GameObject m_target;
+    [SerializeField] Player m_target;
 
     float m_yaw = 0.0f;
 
     void Update()
     {
-        m_yaw += Input.GetAxis("RightJoystickY") * m_lookSpeed;
+        if (m_target.m_FirstPlayer)
+            m_yaw += Input.GetAxis("RightJoystickY1") * m_lookSpeed;
+        else
+            m_yaw += Input.GetAxis("RightJoystickY2") * m_lookSpeed;
+
         //m_pitch = Mathf.Clamp(m_pitch, m_pitchMin, m_pitchMax); //Used for camera rotation along the x axis. Currently a static variable for pitch.
 
         Quaternion view = /*m_target.transform.rotation **/ Quaternion.Euler(m_pitch, m_yaw, 0.0f); //Target transform rotation is used to stay snapped to the target object otherwise the camera stays static

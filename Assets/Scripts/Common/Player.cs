@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] [Range(1.0f, 100.0f)] float m_speed = 1.0f;
+    [SerializeField] [Range(1.0f, 100.0f)] float m_speed = 5.0f;
     [SerializeField] [Range(1.0f, 100.0f)] float m_turnSpeed = 1.0f;
+    [SerializeField] bool m_firstPlayer;
 
+    public bool m_FirstPlayer { get { return m_firstPlayer; } }
     public int Score { get; set; }
     public bool Alive { get; set; }
 
@@ -20,8 +22,16 @@ public class Player : MonoBehaviour
         Vector3 velocity = Vector3.zero;
         Vector3 rotate = Vector3.zero;
 
-        velocity.z = Input.GetAxis("Vertical") * m_speed;
-        rotate.y = Input.GetAxis("Horizontal") * m_turnSpeed;
+        if (m_firstPlayer)
+        {
+            velocity.z = Input.GetAxis("Vertical1") * m_speed;
+            rotate.y = Input.GetAxis("Horizontal1") * m_turnSpeed;
+        }
+        else
+        {
+            velocity.z = Input.GetAxis("Vertical2") * m_speed;
+            rotate.y = Input.GetAxis("Horizontal2") * m_turnSpeed;
+        }
 
         transform.rotation = transform.rotation * Quaternion.Euler(rotate * Time.deltaTime);
 
