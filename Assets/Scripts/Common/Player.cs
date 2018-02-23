@@ -21,16 +21,25 @@ public class Player : MonoBehaviour
     {
         Vector3 velocity = Vector3.zero;
         Vector3 rotate = Vector3.zero;
+        float reverse = 1.0f;
 
         if (m_firstPlayer)
         {
             velocity.z = Input.GetAxis("Vertical1") * m_speed;
-            rotate.y = Input.GetAxis("Horizontal1") * m_turnSpeed;
+
+            if (velocity.z < 0.01f)
+                reverse = -1.0f;
+
+            rotate.y = (Input.GetAxis("Horizontal1") * m_turnSpeed) * reverse;
         }
         else
         {
             velocity.z = Input.GetAxis("Vertical2") * m_speed;
-            rotate.y = Input.GetAxis("Horizontal2") * m_turnSpeed;
+
+            if (velocity.z < 0.01f)
+                reverse = -1.0f;
+
+            rotate.y = (Input.GetAxis("Horizontal2") * m_turnSpeed) * reverse;
         }
 
         transform.rotation = transform.rotation * Quaternion.Euler(rotate * Time.deltaTime);
