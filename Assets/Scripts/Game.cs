@@ -22,29 +22,35 @@ public class Game : MonoBehaviour
     float m_currentSeconds = 0;
     private void Start()
     {
-        m_p1 = m_player1.GetComponent<Player>();
-        m_p2 = m_player2.GetComponent<Player>();
+        if (m_player1 && m_player2)
+        {
+            m_p1 = m_player1.GetComponent<Player>();
+            m_p2 = m_player2.GetComponent<Player>();
 
-        m_p1.Alive = true;
-        m_p2.Alive = true;
+            m_p1.Alive = true;
+            m_p2.Alive = true;
+        }
     }
 
     private void Update()
     {
-        m_bothDead = (!m_p1.Alive && !m_p2.Alive);
-        if (m_bothDead)
+        if (m_p1 && m_p2)
         {
-            EndGame();
-        }
-        else
-        {
-            UpdateTime();
-            UpdateScore();
-        }
+            m_bothDead = (!m_p1.Alive && !m_p2.Alive);
+            if (m_bothDead)
+            {
+                EndGame();
+            }
+            else
+            {
+                UpdateTime();
+                UpdateScore();
+            }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            PauseGame();
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                PauseGame();
+            }
         }
     }
 

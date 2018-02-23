@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainWorld.unity
     guid: 030f1970c7f10f54aa8d919b32ed84f2
+  - enabled: 1
+    path: Assets/Scenes/MainWorldColin.unity
+    guid: 2526e0151feb0344c8d520a721ad304a

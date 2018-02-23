@@ -23,7 +23,10 @@ public class Crop : MonoBehaviour
         m_collider = GetComponent<SphereCollider>();
         m_meshRenderer = GetComponentInChildren<MeshRenderer>();
         m_particleSystem = GetComponentInChildren<ParticleSystem>();
-        m_hudText = m_cropHUD.GetComponentInChildren<TextMeshProUGUI>();
+        if (m_cropHUD)
+        {
+            m_hudText = m_cropHUD.GetComponentInChildren<TextMeshProUGUI>();
+        }
 
         m_life = m_maxLife;
         m_time = 0.0f;
