@@ -48,15 +48,15 @@ public class Crop : MonoBehaviour
         Player player = other.GetComponent<Player>();
         if (other.CompareTag("Player") && !Eaten && player.Alive)
         {
-            //string button = player.m_player1 ? "Eat1" : "Eat2";
-            //if (Input.GetButton(button))
-            //{
-            //    NibbleOnCrop(other.GetComponent<Player>());
-            //}
-            //if (Input.GetButtonUp(button))
-            //{
-            //    m_life = m_maxLife;
-            //}
+            string button = player.m_FirstPlayer ? "Eat1" : "Eat2";
+            if (Input.GetButton(button))
+            {
+                NibbleOnCrop(other.GetComponent<Player>());
+            }
+            if (Input.GetButtonUp(button))
+            {
+                m_life = m_maxLife;
+            }
             m_cropHUD.SetActive(true);
 
             Camera[] cameras = Camera.allCameras;

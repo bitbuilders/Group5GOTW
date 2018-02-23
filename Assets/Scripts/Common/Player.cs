@@ -26,11 +26,13 @@ public class Player : MonoBehaviour
         {
             velocity.z = Input.GetAxis("Vertical1") * m_speed;
             rotate.y = Input.GetAxis("Horizontal1") * m_turnSpeed;
+            print(velocity.magnitude > 0.0f);
         }
         else
         {
             velocity.z = Input.GetAxis("Vertical2") * m_speed;
             rotate.y = Input.GetAxis("Horizontal2") * m_turnSpeed;
+            print(rotate.magnitude > 0.0f);
         }
 
         transform.rotation = transform.rotation * Quaternion.Euler(rotate * Time.deltaTime);
