@@ -38,7 +38,7 @@ public class AnimalAI : MonoBehaviour
             Quaternion rotation = Quaternion.LookRotation(direction.normalized);
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * m_turnSpeed);
 
-            if (m_targetCrop.Eaten)
+            if (m_targetCrop && m_targetCrop.Eaten)
             {
                 FindNextCrop();
             }

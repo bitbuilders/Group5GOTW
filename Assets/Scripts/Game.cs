@@ -47,7 +47,7 @@ public class Game : MonoBehaviour
                 UpdateScore();
             }
 
-            if (Input.GetKeyDown("Pause"))
+            if (Input.GetButtonDown("Pause"))
             {
                 PauseGame();
             }
