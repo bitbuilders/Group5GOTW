@@ -55,6 +55,7 @@ public class Crop : MonoBehaviour
             if (Input.GetButton(button))
             {
                 NibbleOnCrop(player);
+                AudioManager.Instance.PlayClip("Eat", transform.position);
             }
             if (Input.GetButtonUp(button))
             {
@@ -79,6 +80,7 @@ public class Crop : MonoBehaviour
         else if (other.CompareTag("AI"))
         {
             AIOnCrop(other.GetComponent<AnimalAI>());
+            AudioManager.Instance.PlayClip("Eat", transform.position);
         }
 
         if (Eaten)
