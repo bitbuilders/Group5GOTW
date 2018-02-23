@@ -6,7 +6,7 @@ using UnityEngine;
 public class Crop : MonoBehaviour
 {
     [SerializeField] [Range(0.1f, 20.0f)] float m_maxLife = 3.0f;
-    [SerializeField] [Range(0.1f, 20.0f)] float m_respawnTime = 3.0f;
+    [SerializeField] [Range(0.1f, 20.0f)] float m_respawnTime = 6.0f;
     [SerializeField] GameObject m_cropHUD;
 
     ParticleSystem m_particleSystem;
@@ -27,6 +27,8 @@ public class Crop : MonoBehaviour
 
         m_life = m_maxLife;
         m_time = 0.0f;
+
+        StartCoroutine(ScaleUp());
     }
 
     private void Update()
@@ -48,7 +50,7 @@ public class Crop : MonoBehaviour
         {
             if (Input.GetButton("Eat"))
             {
-                NibbleOnCrop();
+                NibbleOnCrop(other.GetComponent<Player>());
             }
             if (Input.GetButtonUp("Eat"))
             {
@@ -56,10 +58,18 @@ public class Crop : MonoBehaviour
             }
             m_cropHUD.SetActive(true);
 
-            Vector3 direction = other.transform.position - transform.position;
+            Camera[] cameras = Camera.allCameras;
+
+            Vector3 direction1 = cameras[0].transform.position - transform.position;
+            Vector3 direction2 = cameras[1].transform.position - transform.position;
+
+            bool camera1Closer = (direction1.magnitude < direction2.magnitude);
+            GameObject target = camera1Closer ? cameras[0].gameObject : cameras[1].gameObject;
+
+            Vector3 direction = target.transform.position - transform.position;
             direction.x = 0.0f;
             direction.z = 0.0f;
-            m_hudText.transform.LookAt(other.transform.position + Vector3.up * 3 - direction);
+            m_hudText.transform.LookAt(target.transform.position - direction);
             m_hudText.transform.Rotate(0.0f, 180.0f, 0.0f);
         }
 
@@ -80,16 +90,20 @@ public class Crop : MonoBehaviour
         }
     }
 
-    void NibbleOnCrop()
+    void NibbleOnCrop(Player player)
     {
-        m_life -= Time.deltaTime;
-        if (Eaten)
+        if (player)
         {
-            Die();
-        }
-        else
-        {
-            m_particleSystem.Play();
+            m_life -= Time.deltaTime;
+            if (Eaten)
+            {
+                player.Score += (int)(m_maxLife * 2.0f);
+                Die();
+            }
+            else
+            {
+                m_particleSystem.Play();
+            }
         }
     }
 
@@ -106,5 +120,19 @@ public class Crop : MonoBehaviour
         m_life = m_maxLife;
         m_collider.enabled = true;
         m_meshRenderer.enabled = true;
+        StartCoroutine(ScaleUp());
+    }
+
+    IEnumerator ScaleUp()
+    {
+        transform.localScale = Vector3.zero;
+
+        for (float i = 0.0f; i <= 1.0f; i += Time.deltaTime)
+        {
+            transform.localScale = new Vector3(i, i, i);
+            yield return null;
+        }
+
+        transform.localScale = Vector3.one;
     }
 }
