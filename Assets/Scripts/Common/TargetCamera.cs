@@ -16,9 +16,9 @@ public class TargetCamera : MonoBehaviour
     void Update()
     {
         m_yaw += Input.GetAxis("RightJoystickY") * m_lookSpeed;
-        //m_pitch = Mathf.Clamp(m_pitch, m_pitchMin, m_pitchMax);
+        //m_pitch = Mathf.Clamp(m_pitch, m_pitchMin, m_pitchMax); //Used for camera rotation along the x axis. Currently a static variable for pitch.
 
-        Quaternion view = m_target.transform.rotation * Quaternion.Euler(m_pitch, m_yaw, 0.0f);
+        Quaternion view = /*m_target.transform.rotation **/ Quaternion.Euler(m_pitch, m_yaw, 0.0f); //Target transform rotation is used to stay snapped to the target object otherwise the camera stays static
         Vector3 position = m_target.transform.position;
         Vector3 offset = (view * Vector3.back * m_distance) + Vector3.up * m_upOffset;
 
