@@ -53,5 +53,16 @@ public class VoxelAnimator : MonoBehaviour
 		GetComponent<MeshFilter>().mesh = mesh;
 	}
 
+	public void SetBool(string parameter, bool value)
+	{
+		foreach (BoolParameter param in m_boolParams)
+		{
+			if(param.Name == parameter)
+			{
+				param.Value = value;
+			}
+		}
+	}
+
 	#endregion
 }

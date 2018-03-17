@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     [SerializeField] [Range(1.0f, 100.0f)] float m_turnSpeed = 1.0f;
     [SerializeField] bool m_firstPlayer;
 
+    [SerializeField] VoxelAnimator m_animator;
+
     public bool m_FirstPlayer { get { return m_firstPlayer; } }
     public int Score { get; set; }
     public bool Alive { get; set; }
@@ -40,6 +42,14 @@ public class Player : MonoBehaviour
                 reverse = -1.0f;
 
             rotate.y = (Input.GetAxis("Horizontal2") * m_turnSpeed) * reverse;
+            if(velocity.magnitude > 0.2)
+            {
+                //m_animator.SetBool("Walking", true);
+            }
+            else
+            {
+                //m_animator.SetBool("Walking", false);
+            }
         }
 
         transform.rotation = transform.rotation * Quaternion.Euler(rotate * Time.deltaTime);
